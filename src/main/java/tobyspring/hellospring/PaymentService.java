@@ -11,9 +11,15 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
-abstract public class PaymentService {
+public class PaymentService {
+    private final ExRateProvider exRateProvider;
+
+    public PaymentService() {
+        this.exRateProvider = new SimpleExRateProvider();
+    }
+
     public Payment prepare(Long orderId, String currency, BigDecimal foreignCurrencyAmount) throws IOException {
-        BigDecimal exRate = getExRate(currency);
+        BigDecimal exRate = exRateProvider.getExRate(currency);
 
         BigDecimal convertedAmount = foreignCurrencyAmount.multiply(exRate);
 
@@ -22,6 +28,4 @@ abstract public class PaymentService {
         return new Payment(orderId, currency, foreignCurrencyAmount, exRate, convertedAmount,
                 validUtil);
     }
-
-    abstract BigDecimal getExRate(String currency) throws IOException;
 }
