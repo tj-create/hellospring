@@ -1,6 +1,7 @@
 package tobyspring.hellospring.payment;
 
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 public class Payment {
@@ -24,6 +25,17 @@ public class Payment {
         this.exRate = exRate;
         this.convertedAmount = convertedAmount;
         this.validUtil = validUtil;
+    }
+
+    public static Payment createPayment(Long orderId, String currency, BigDecimal foreignCurrencyAmount, ExRateProvider exRateProvider, LocalDateTime now)  {
+        BigDecimal convertedAmount = exRateProvider.getExRate(currency).multiply(foreignCurrencyAmount);
+        LocalDateTime validUtil = now.plusMinutes(30);
+
+        return new Payment(orderId, currency, foreignCurrencyAmount, exRateProvider.getExRate(currency), convertedAmount, validUtil);
+    }
+
+    public Boolean isValidTime(Clock clock) {
+        return LocalDateTime.now(clock).isBefore(this.validUtil);
     }
 
     public Long getOrderId() {
