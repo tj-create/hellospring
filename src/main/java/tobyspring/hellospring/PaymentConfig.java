@@ -8,7 +8,6 @@ import tobyspring.hellospring.api.ApiTemplate;
 import tobyspring.hellospring.exrate.CachedExRateProvider;
 import tobyspring.hellospring.exrate.RestTemplateExRateProvider;
 import tobyspring.hellospring.payment.ExRateProvider;
-import tobyspring.hellospring.exrate.WebApiExRateProvider;
 import tobyspring.hellospring.payment.PaymentService;
 
 import java.time.Clock;

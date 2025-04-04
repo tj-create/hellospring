@@ -1,7 +1,5 @@
 package tobyspring.hellospring;
 
-import com.zaxxer.hikari.HikariDataSource;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +12,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import tobyspring.hellospring.data.OrderRepository;
-import tobyspring.hellospring.data.RepositoryTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -47,13 +44,8 @@ public class DataConfig {
     }
 
     @Bean
-    public JpaTransactionManager transactionManager(EntityManagerFactory emf) {
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
-    }
-
-    @Bean
-    public OrderRepository orderRepository() {
-        return new OrderRepository();
     }
 
     @Bean
